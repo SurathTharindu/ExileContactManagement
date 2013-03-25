@@ -24,7 +24,7 @@ namespace ExileContactManagement.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password*")]
         [System.Web.Mvc.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        public virtual string ConfirmPassword { get; set; }
 
         public User()
         {

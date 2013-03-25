@@ -23,11 +23,15 @@ namespace ExileContactManagement.DBAccess
             using (ITransaction transaction = session.BeginTransaction())
             {
                 enteredUser = (List<User>)session.QueryOver<User>()
-                                  .Where(uic => uic.UserName == username)
-                                  .List();
+                                               .Where(uic => uic.UserName == username)
+                                               .List();
                 transaction.Commit();
             }
-            return enteredUser[0];
+            if (enteredUser.Count >= 1)
+            {
+                return enteredUser[0];
+            }
+            return null;
         }
     }
 }

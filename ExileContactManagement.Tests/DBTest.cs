@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using ExileContactManagement.DBAccess;
 using ExileContactManagement.Models;
 using FluentAssertions;
 using NHibernate;
-using NHibernate.Linq;
 using NUnit.Framework;
 
 namespace ExileContactManagement.Tests
@@ -13,20 +11,21 @@ namespace ExileContactManagement.Tests
     public class DBTest
     {
         UserManagement UserMn = new UserManagement();
+        ContactManagement CntactMn=new ContactManagement();
         private ISession _session;
 
         [Test]
         public void RegisteredUserExistInDB()
         {
-            _session = NhibernateContext.Session;
             var user = new User("tomm", "tom123");
             UserMn.RegisterUser(user);
 
+            _session = NhibernateContext.Session;
             List<User> enteredUser;
             using (ITransaction transaction = NhibernateContext.Session.BeginTransaction())
             {
                 enteredUser=(List<User>) _session.QueryOver<User>()
-                                  .Where(uic => uic.UserName == user.UserName && uic.Password == user.Password)
+                                  .Where(x => x.UserName == user.UserName && x.Password == user.Password)
                                   .List();
                 transaction.Commit();
             }
@@ -37,20 +36,65 @@ namespace ExileContactManagement.Tests
         [Timeout(7500)]
         public void RegisteredUserPerformWell()
         {
-            _session = NhibernateContext.Session;
-            var user = new User("tomm", "tom123");
+            var user = new User("jim", "jim123");
             UserMn.RegisterUser(user);
         }
 
         [Test]
         public void ChekExistanceOfUsername()
         {
-            _session = NhibernateContext.Session;
-            var user = new User("tomm", "tom123");
+            var user = new User("jerry", "jerry123");
             UserMn.RegisterUser(user);
 
-            var checkedUser=UserMn.GetUserByUsername("tomm");
+            var checkedUser = UserMn.GetUserByUsername("jerry");
             checkedUser.Should().NotBeNull();
+        }
+
+        [Test]
+        public void CheckExistanceOfUserContact()
+        {
+            var user = new User("nick", "nick123");
+            UserMn.RegisterUser(user);
+
+            var contact = new Contact("john", "Colombo");
+            CntactMn.CreateContact(user.UserName,contact);
+
+            _session = NhibernateContext.Session;
+            List<Contact> addedContact;
+            using (ITransaction transaction = NhibernateContext.Session.BeginTransaction())
+            {
+                addedContact = (List<Contact>)_session.QueryOver<Contact>()
+                                  .Where(x => x.Id==contact.Id)
+                                  .List();
+                transaction.Commit();
+            }
+            addedContact.Count.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void UpdateRecordCorrectly()
+        {
+            var user = new User("paul", "paul123");
+            UserMn.RegisterUser(user);
+
+            var contact = new Contact("jonny", "Kandy");
+            CntactMn.CreateContact(user.UserName, contact);
+
+            contact.Name = "Sandy";
+            contact.Location = "Kurunegala";
+            CntactMn.UpdateContact(contact);
+
+            _session = NhibernateContext.Session;
+            List<Contact> addedContact;
+            using (ITransaction transaction = NhibernateContext.Session.BeginTransaction())
+            {
+                addedContact = (List<Contact>)_session.QueryOver<Contact>()
+                                  .Where(x => x.Id == contact.Id)
+                                  .List();
+                transaction.Commit();
+            }
+            addedContact[0].Name.Should().Be(contact.Name);
+            addedContact[0].Location.Should().Be(contact.Location);
         }
     }
 }

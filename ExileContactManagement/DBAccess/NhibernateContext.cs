@@ -23,6 +23,11 @@ namespace ExileContactManagement.DBAccess
             }
         }
 
+        public static void CloseCookie()
+        {
+            _session.Flush();
+        }
+
         private static ISessionFactory CreateSessionFactory()
         {
             return Fluently.Configure()
