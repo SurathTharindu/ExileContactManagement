@@ -101,5 +101,17 @@ namespace ExileContactManagement.Controllers
                 return View();
             }
         }
+
+        // GET: /Contact/Display
+        public ActionResult Display()
+        {
+            return View();
+        }
+
+        //GET: /Contact/Search
+        public ActionResult Search()
+        {
+            return View();
+        }
     }
 }
