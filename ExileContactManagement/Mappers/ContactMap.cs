@@ -11,7 +11,7 @@ namespace ExileContactManagement.Mappers
             Map(x => x.Name);
             Map(x=>x.Location);
 
-            References(x => x.User);
+            References<User>(x => x.User);
         }
     }
 }

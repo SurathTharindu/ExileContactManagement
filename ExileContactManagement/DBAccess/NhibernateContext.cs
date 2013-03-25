@@ -8,21 +8,15 @@ namespace ExileContactManagement.DBAccess
 {
     public class NhibernateContext
     {
-        private ISession _session;
+        private static ISession _session;
 
-        public NhibernateContext()
-        {
-            _session = null;
-        }
-
-        public ISession Session
+        public static ISession Session
         {
             get
             {
                 if (_session == null)
                 {
-                    var sessionFactory = CreateSessionFactory();
-                    var session = sessionFactory.OpenSession();
+                    var session = CreateSessionFactory().OpenSession();
                     _session = session;
                 }
                 return _session;
@@ -38,8 +32,8 @@ namespace ExileContactManagement.DBAccess
                             .Database("ExileContactMgt")
                             .Username("sa")
                             .Password("eXile123")))
-              .Mappings(m => m.FluentMappings.AddFromAssemblyOf<User>())
-              .ExposeConfiguration(cfg => new SchemaExport(cfg).Create(false, true))
+              .Mappings(m => m.FluentMappings.AddFromAssemblyOf<NhibernateContext>())
+              .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
               .BuildSessionFactory();
         }
     }
