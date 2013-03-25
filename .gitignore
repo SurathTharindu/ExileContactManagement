@@ -117,4 +117,18 @@ packages
 packages
 bin
 obj
+<<<<<<< HEAD
+=======
+
 obj
+Debug
+packages
+bin
+
+obj
+/ExileContactManagement/packages.config
+/ExileContactManagement/ExileContactManagement.csproj
+>>>>>>> 7d244aa0095880ae8bf9617f3979343750633b1c
+obj
+
+*.suo

@@ -15,7 +15,7 @@ namespace ExileContactManagement.DBAccess
             ISession session = _context.Session;
             using (ITransaction transaction = session.BeginTransaction())
             {
-                session.SaveOrUpdate(newUser);
+                session.Save(newUser);
                 transaction.Commit();
             }
         }
