@@ -114,6 +114,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\ContactMap.cs" />
+    <Compile Include="Mappers\UserMap.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\User.cs" />
@@ -216,7 +218,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Mappers\" />
     <Folder Include="Views\Contact\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

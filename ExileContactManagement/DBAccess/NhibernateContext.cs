@@ -34,7 +34,10 @@ namespace ExileContactManagement.DBAccess
             return Fluently.Configure()
               .Database(MsSqlConfiguration.MsSql2008
                             .ConnectionString(c => c
-                            .FromConnectionStringWithKey("Server=localhost; Port=3306; Database=ExileContactMgt; Uid=sa; Pwd=eXile123;")))
+                            .Server("localhost")
+                            .Database("ExileContactMgt")
+                            .Username("sa")
+                            .Password("eXile123")))
               .Mappings(m => m.FluentMappings.AddFromAssemblyOf<User>())
               .ExposeConfiguration(cfg => new SchemaExport(cfg).Create(false, true))
               .BuildSessionFactory();
