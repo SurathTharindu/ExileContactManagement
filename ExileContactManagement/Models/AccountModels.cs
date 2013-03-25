@@ -22,7 +22,7 @@ namespace ExileContactManagement.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class LogOnModel
+  /*  public class LogOnModel
     {
         [Required]
         [Display(Name = "User name")]
@@ -56,5 +56,5 @@ namespace ExileContactManagement.Models
         [Display(Name = "Confirm password*")]
         [System.Web.Mvc.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-    }
+    }*/
 }

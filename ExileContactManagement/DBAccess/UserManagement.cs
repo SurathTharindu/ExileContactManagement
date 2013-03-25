@@ -10,6 +10,7 @@ namespace ExileContactManagement.DBAccess
         {
             _context = new NhibernateContext();
         }
+
         public void RegisterUser(User newUser)
         {
             ISession session = _context.Session;

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using ExileContactManagement.DBAccess;
+using ExileContactManagement.Models;
 
 namespace ExileContactManagement.Controllers
 {
@@ -14,6 +17,75 @@ namespace ExileContactManagement.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        //Get: /User/LogOn/
+        public ActionResult LogOn()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LogOn(LogOnModel model, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (Membership.ValidateUser(model.UserName, model.Password))
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /User/LogOff
+
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        // GET: /User/Register
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register(RegisterModel userModel)
+        {
+            if (ModelState.IsValid)
+            {
+                UserManagement userMgr = new UserManagement();
+                userMgr.RegisterUser(new User(){UserName = userModel.UserName,Password = userModel.Password});
+                FormsAuthentication.SetAuthCookie(userModel.UserName, false /* createPersistentCookie */);
+                return RedirectToAction("Index", "User");
+                // Attempt to register the user
+                /*    MembershipCreateStatus createStatus;
+                    Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+
+                    if (createStatus == MembershipCreateStatus.Success)
+                    {
+                        FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie #1#);
+                        return RedirectToAction("Index", "User");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    }*/
+            }
+            // If we got this far, something failed, redisplay form
+            return View(userModel);
         }
 
         //
@@ -30,18 +102,19 @@ namespace ExileContactManagement.Controllers
         public ActionResult Create()
         {
             return View();
-        } 
+        }
 
         //
         // POST: /User/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(User createdUser)
         {
             try
             {
                 // TODO: Add insert logic here
-
+                UserManagement userMgr = new UserManagement();
+                userMgr.RegisterUser(createdUser);
                 return RedirectToAction("Index");
             }
             catch
@@ -49,10 +122,10 @@ namespace ExileContactManagement.Controllers
                 return View();
             }
         }
-        
+
         //
         // GET: /User/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             return View();
@@ -67,7 +140,7 @@ namespace ExileContactManagement.Controllers
             try
             {
                 // TODO: Add update logic here
- 
+
                 return RedirectToAction("Index");
             }
             catch
@@ -78,7 +151,7 @@ namespace ExileContactManagement.Controllers
 
         //
         // GET: /User/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
             return View();
@@ -93,7 +166,7 @@ namespace ExileContactManagement.Controllers
             try
             {
                 // TODO: Add delete logic here
- 
+
                 return RedirectToAction("Index");
             }
             catch
