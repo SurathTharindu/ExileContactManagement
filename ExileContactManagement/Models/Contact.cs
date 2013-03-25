@@ -5,12 +5,7 @@ namespace ExileContactManagement.Models
 {
     public class Contact
 
-    {        
-        [Required]
-        public virtual String Name { get; set; }
-        [Required]
-        public virtual String Location { get; set; }
-
+    {
         public Contact()
         {
             Id = 0;
@@ -18,15 +13,19 @@ namespace ExileContactManagement.Models
             Location = "";
         }
 
-        public virtual int Id { get; set; }
-        public virtual User User { get; set; }
-
         public Contact(string name, string address)
         {
             Name = name;
             Location = address;
         }
 
+        [Required]
+        public virtual String Name { get; set; }
 
+        [Required]
+        public virtual String Location { get; set; }
+
+        public virtual int Id { get; set; }
+        public virtual User User { get; set; }
     }
 }

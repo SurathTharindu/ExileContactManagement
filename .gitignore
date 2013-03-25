@@ -117,3 +117,11 @@ packages
 packages
 bin
 obj
+
+obj
+Debug
+packages
+bin
+
+obj
+/ExileContactManagement/packages.config
