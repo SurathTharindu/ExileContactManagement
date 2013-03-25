@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ExileContactManagement.Models
 {
     public class Contact
+
     {        
         [Required]
         public virtual String Name { get; set; }
@@ -17,15 +18,15 @@ namespace ExileContactManagement.Models
             Location = "";
         }
 
+        public virtual int Id { get; set; }
+        public virtual User User { get; set; }
+
         public Contact(string name, string address)
         {
             Name = name;
             Location = address;
         }
 
-        public int Id { get; set; }
-    
-        public User Owner;
 
     }
 }

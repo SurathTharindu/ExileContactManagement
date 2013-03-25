@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
@@ -114,9 +115,14 @@
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DBAccess\ContactManagement.cs" />
+    <Compile Include="DBAccess\NhibernateContext.cs" />
+    <Compile Include="DBAccess\UserManagement.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\ContactMap.cs" />
+    <Compile Include="Mappers\UserMap.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Search.cs" />

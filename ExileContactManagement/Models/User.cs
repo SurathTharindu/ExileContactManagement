@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -8,8 +7,9 @@ namespace ExileContactManagement.Models
 {
     public class User
     {
-        public int UId { get; set; }
-        public List<Contact> ContactList;
+
+        public virtual int UId { get; set; }
+        public virtual IList<Contact> ContactList { get; set; }
 
         [Required]
         [Display(Name = "User name")]
@@ -31,8 +31,13 @@ namespace ExileContactManagement.Models
             UId = 0;
             UserName = "";
             Password = "";
+        }
 
+        public User(string username,string password)
+        {
             ContactList = new List<Contact>();
+            UserName = username;
+            Password = password;
         }
     }
 }
