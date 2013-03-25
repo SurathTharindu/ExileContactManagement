@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExileContactManagement", "ExileContactManagement\ExileContactManagement.csproj", "{20F5325B-1431-43DA-821A-14617F2781BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExileContactManagement.Tests", "ExileContactManagement.Tests\ExileContactManagement.Tests.csproj", "{16727A9A-37B6-4A39-A5B8-D4CBDCC37316}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20F5325B-1431-43DA-821A-14617F2781BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20F5325B-1431-43DA-821A-14617F2781BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20F5325B-1431-43DA-821A-14617F2781BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20F5325B-1431-43DA-821A-14617F2781BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16727A9A-37B6-4A39-A5B8-D4CBDCC37316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16727A9A-37B6-4A39-A5B8-D4CBDCC37316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16727A9A-37B6-4A39-A5B8-D4CBDCC37316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16727A9A-37B6-4A39-A5B8-D4CBDCC37316}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
