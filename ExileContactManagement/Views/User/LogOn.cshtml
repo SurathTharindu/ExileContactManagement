@@ -1,20 +1,23 @@
-﻿@model ExileContactManagement.Models.User
+﻿@model ExileContactManagement.Models.LogOnModel
+
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Log On";
 }
 
-<h2>Create New Account</h2>
-
+<h2>Log On</h2>
+<p>
+    Please enter your user name and password. @Html.ActionLink("Register", "Register") if you don't have an account.
+</p>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.")
+@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+
+@using (Html.BeginForm()) {
     <div>
         <fieldset>
-            <legend>User Information</legend>
+            <legend>Account Information</legend>
 
             <div class="editor-label">
                 @Html.LabelFor(m => m.UserName)
@@ -33,17 +36,12 @@
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
             </div>
-            <div class="editor-field">
-                @Html.PasswordFor(m => m.ConfirmPassword)
-                @Html.ValidationMessageFor(m => m.ConfirmPassword)
-            </div>
-          @*  <p>
-            //    Passwords are required to be a minimum of @Membership.MinRequiredPasswordLength characters in length.
-            </p>*@
+
             <p>
-                <input type="submit" value="Register" />
+                <input type="submit" value="Log On" />
             </p>
         </fieldset>
     </div>
