@@ -11,6 +11,8 @@ namespace ExileContactManagement.Controllers
         //
         // GET: /Contact/
 
+
+
         public ActionResult Index()
         {
             return View();
