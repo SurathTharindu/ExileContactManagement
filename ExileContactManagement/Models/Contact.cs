@@ -1,15 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace ExileContactManagement.Models
 {
     public class Contact
-    {
-        public  String Name ;
-        public String Location;
-        public int Id;
+    {        
+        [Required]
+        public virtual String Name { get; set; }
+        [Required]
+        public virtual String Location { get; set; }
+
+        public Contact()
+        {
+            Id = 0;
+            Name = "";
+            Location = "";
+        }
+
+        public Contact(string name, string address)
+        {
+            Name = name;
+            Location = address;
+        }
+
+        public int Id { get; set; }
+    
         public User Owner;
 
     }

@@ -7,8 +7,8 @@ namespace ExileContactManagement.Models
 {
     public class User
     {
-        public  String UserName ;
-        public int UId;
+        public String UserName { get; set; }
+        public int UId { get; set; }
         public List<Contact> ContactList;
 
         public User()
