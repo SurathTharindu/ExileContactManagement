@@ -7,5 +7,10 @@ namespace ExileContactManagement.Models
 {
     public class Contact
     {
+        public  String Name ;
+        public String Location;
+        public int Id;
+        public User Owner;
+
     }
 }
