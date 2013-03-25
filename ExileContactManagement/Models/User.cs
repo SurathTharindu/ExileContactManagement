@@ -9,6 +9,7 @@ namespace ExileContactManagement.Models
             UId = 0;
             UserName = "";
             Password = "";
+            ContactList = new List<Contact>();
         }
 
         public User(string username, string password)
