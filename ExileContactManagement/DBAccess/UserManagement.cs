@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ExileContactManagement.Models;
-using NHibernate;
 
 namespace ExileContactManagement.DBAccess
 {
@@ -9,8 +8,8 @@ namespace ExileContactManagement.DBAccess
 
         public void RegisterUser(User newUser)
         {
-            ISession session = NhibernateContext.Session;
-            using (ITransaction transaction = session.BeginTransaction())
+            var session = NhibernateContext.Session;
+            using (var transaction = session.BeginTransaction())
             {
                 session.Save(newUser);
                 transaction.Commit();
@@ -20,19 +19,34 @@ namespace ExileContactManagement.DBAccess
         public User GetUserByUsername(string username)
         {
             List<User> enteredUser;
-            ISession session = NhibernateContext.Session;
-            using (ITransaction transaction = session.BeginTransaction())
+            var session = NhibernateContext.Session;
+            using (var transaction = session.BeginTransaction())
             {
                 enteredUser = (List<User>)session.QueryOver<User>()
                                                .Where(uic => uic.UserName == username)
                                                .List();
                 transaction.Commit();
             }
-            if (enteredUser.Count >= 1)
+            return enteredUser.Count >= 1 ? enteredUser[0] : null;
+        }
+
+        public bool AuthenticateUser(string username, string password)
+        {
+            var authenticate = false;
+            List<User> authenticatedList;
+            var session = NhibernateContext.Session;
+            using (var transaction = session.BeginTransaction())
             {
-                return enteredUser[0];
+                authenticatedList = (List<User>)session.QueryOver<User>()
+                                               .Where(x => x.UserName == username && x.Password==password)
+                                               .List();
+                transaction.Commit();
             }
-            return null;
+            if (authenticatedList.Count >= 1)
+            {
+                authenticate=true;
+            }
+            return authenticate;
         }
     }
 }

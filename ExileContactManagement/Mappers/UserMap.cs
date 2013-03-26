@@ -10,7 +10,7 @@ namespace ExileContactManagement.Mappers
             Id(x => x.UId);
             Map(x=>x.UserName);
             Map(x=>x.Password);
-            HasMany<Contact>(x => x.ContactList).Cascade.AllDeleteOrphan().Not.LazyLoad();
+            HasMany<Contact>(x => x.ContactList).Cascade.AllDeleteOrphan();
         }
     }
 }

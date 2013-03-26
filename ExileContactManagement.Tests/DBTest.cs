@@ -22,7 +22,7 @@ namespace ExileContactManagement.Tests
 
             _session = NhibernateContext.Session;
             List<User> enteredUser;
-            using (ITransaction transaction = NhibernateContext.Session.BeginTransaction())
+            using (var transaction = NhibernateContext.Session.BeginTransaction())
             {
                 enteredUser=(List<User>) _session.QueryOver<User>()
                                   .Where(x => x.UserName == user.UserName && x.Password == user.Password)
@@ -56,12 +56,12 @@ namespace ExileContactManagement.Tests
             var user = new User("nick", "nick123");
             UserMn.RegisterUser(user);
 
-            var contact = new Contact("john", "Colombo");
-            CntactMn.CreateContact(user.UserName,contact);
+            var contact = new Contact("john", "Colombo") {User = user};
+            CntactMn.CreateContact(contact);
 
             _session = NhibernateContext.Session;
             List<Contact> addedContact;
-            using (ITransaction transaction = NhibernateContext.Session.BeginTransaction())
+            using (var transaction = NhibernateContext.Session.BeginTransaction())
             {
                 addedContact = (List<Contact>)_session.QueryOver<Contact>()
                                   .Where(x => x.Id==contact.Id)
@@ -77,8 +77,8 @@ namespace ExileContactManagement.Tests
             var user = new User("paul", "paul123");
             UserMn.RegisterUser(user);
 
-            var contact = new Contact("jonny", "Kandy");
-            CntactMn.CreateContact(user.UserName, contact);
+            var contact = new Contact("jonny", "Kandy") {User = user};
+            CntactMn.CreateContact(contact);
 
             contact.Name = "Sandy";
             contact.Location = "Kurunegala";
@@ -86,7 +86,7 @@ namespace ExileContactManagement.Tests
 
             _session = NhibernateContext.Session;
             List<Contact> addedContact;
-            using (ITransaction transaction = NhibernateContext.Session.BeginTransaction())
+            using (var transaction = NhibernateContext.Session.BeginTransaction())
             {
                 addedContact = (List<Contact>)_session.QueryOver<Contact>()
                                   .Where(x => x.Id == contact.Id)
@@ -95,6 +95,38 @@ namespace ExileContactManagement.Tests
             }
             addedContact[0].Name.Should().Be(contact.Name);
             addedContact[0].Location.Should().Be(contact.Location);
+        }
+
+        [Test]
+        public void DeleteRecordCorrectly()
+        {
+            var user = new User("mike", "mike123");
+            UserMn.RegisterUser(user);
+
+            var contact = new Contact("hussey", "Australia") {User = user};
+            CntactMn.CreateContact(contact);
+
+            CntactMn.DeleteContact(contact.Id);
+
+            _session = NhibernateContext.Session;
+            List<Contact> addedContact;
+            using (var transaction = NhibernateContext.Session.BeginTransaction())
+            {
+                addedContact = (List<Contact>)_session.QueryOver<Contact>()
+                                  .Where(x => x.Id == contact.Id)
+                                  .List();
+                transaction.Commit();
+            }
+            addedContact.Count.Should().Be(0);
+        }
+
+        [Test]
+        public void AuthenticateRegiteredUser()
+        {
+            var user = new User("mike", "mike123");
+            UserMn.RegisterUser(user);
+
+            UserMn.AuthenticateUser("mike", "mike123").Should().BeTrue();
         }
     }
 }
