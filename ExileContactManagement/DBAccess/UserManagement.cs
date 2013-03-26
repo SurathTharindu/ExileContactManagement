@@ -16,6 +16,18 @@ namespace ExileContactManagement.DBAccess
             }
         }
 
+        public void ResetPassword(string username, string newPassword)
+        {
+            var user = GetUserByUsername(username);
+            user.Password = newPassword;
+            var session = NhibernateContext.Session;
+            using (var transaction = session.BeginTransaction())
+            {
+                session.SaveOrUpdate(user);
+                transaction.Commit();
+            }
+        }
+
         public User GetUserByUsername(string username)
         {
             List<User> enteredUser;

@@ -128,5 +128,18 @@ namespace ExileContactManagement.Tests
 
             UserMn.AuthenticateUser("mike", "mike123").Should().BeTrue();
         }
+
+        [Test]
+        public void CorrectlyResetPassword()
+        {
+            var user = new User("hobit", "hobit123");
+            UserMn.RegisterUser(user);
+
+            const string newPassword = "123456";
+            UserMn.ResetPassword(user.UserName, newPassword);
+
+            var newUser=UserMn.GetUserByUsername(user.UserName);
+            newUser.Password.Should().NotBe("hobit123").And.Be(newPassword);
+        }
     }
 }
