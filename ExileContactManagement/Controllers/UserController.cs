@@ -11,6 +11,7 @@ namespace ExileContactManagement.Controllers
 {
     public class UserController : Controller
     {
+        private UserManagement userMgr= new UserManagement();
         //
         // GET: /User/
 
@@ -30,11 +31,15 @@ namespace ExileContactManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                User user = userMgr.GetUserByUsername(model.UserName);
+                if (user != null && user.Password == model.Password)
                 {
                     return RedirectToAction("Index", "User");
                 }
+                    /*if (Membership.ValidateUser(model.UserName, model.Password))
+                {
+                    return RedirectToAction("Index", "User");
+                }*/
                 else
                 {
                     ModelState.AddModelError("", "The user name or password provided is incorrect.");
@@ -66,7 +71,7 @@ namespace ExileContactManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserManagement userMgr = new UserManagement();
+                userMgr = new UserManagement();
                 userMgr.RegisterUser(new User(){UserName = userModel.UserName,Password = userModel.Password});
                 FormsAuthentication.SetAuthCookie(userModel.UserName, false /* createPersistentCookie */);
                 return RedirectToAction("Index", "User");

@@ -13,15 +13,20 @@
     <tr>
         <th></th>
     </tr>
-
-@foreach (var item in Model) {
+@{
+    if (Model!=null && Model.Count()>0)
+    {
+        foreach (var item in Model)
+{
     <tr>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
+            @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+            @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
         </td>
     </tr>
 }
+    }
 
+}
 </table>
