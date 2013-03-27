@@ -28,7 +28,11 @@ namespace ExileContactManagement.DBAccess
                                   .List();
                 transaction.Commit();
             }
-            return enteredUser[0];
+            if(enteredUser.Count>=1)
+            {
+                return enteredUser[0];
+            }
+            return null;
         }
     }
 }
