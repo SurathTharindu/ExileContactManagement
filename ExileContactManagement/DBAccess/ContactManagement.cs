@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ExileContactManagement.Models;
+using NHibernate.Criterion;
 
 namespace ExileContactManagement.DBAccess
 {
@@ -61,6 +62,19 @@ namespace ExileContactManagement.DBAccess
         {
             var user = userMn.GetUserByUsername(username);
             return user.ContactList;
+        }
+
+        public List<Contact> SearchedUserContacts(string username, string searchQuery)
+        {
+            var user = userMn.GetUserByUsername(username);
+            List<Contact> searchContacts;
+            var session = NhibernateContext.Session;
+            using (var transaction = session.BeginTransaction())
+            {
+                searchContacts = (List<Contact>)session.QueryOver<Contact>().Where(x => x.Name.IsLike(@"%" + searchQuery + "%") || x.Location.IsLike(@"%" + searchQuery + "%")).And(x => x.User.UId == user.UId).List();
+                transaction.Commit();
+            }
+            return searchContacts;
         }
     }
 }

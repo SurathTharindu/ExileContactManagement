@@ -141,5 +141,18 @@ namespace ExileContactManagement.Tests
             var newUser=UserMn.GetUserByUsername(user.UserName);
             newUser.Password.Should().NotBe("hobit123").And.Be(newPassword);
         }
+
+        [Test]
+        public void SearchContactsCorrectly()
+        {
+            var user = new User("harry", "harry123");
+            UserMn.RegisterUser(user);
+
+            var contact = new Contact("potter", "England");
+            CntactMn.CreateContact(user.UserName, contact);
+
+            var searchList=CntactMn.SearchedUserContacts(user.UserName,"England");
+            searchList.Count.Should().BeGreaterThan(0);
+        }
     }
 }
