@@ -1,5 +1,4 @@
-﻿using ExileContactManagement.Models;
-using FluentNHibernate.Cfg;
+﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
@@ -21,6 +20,12 @@ namespace ExileContactManagement.DBAccess
                 }
                 return _session;
             }
+        }
+
+        public static void CloseCookie()
+        {
+            _session.Flush();
+            _session.Close();
         }
 
         private static ISessionFactory CreateSessionFactory()
