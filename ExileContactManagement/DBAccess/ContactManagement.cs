@@ -6,8 +6,10 @@ namespace ExileContactManagement.DBAccess
     public class ContactManagement
     {
         UserManagement userMn=new UserManagement();
-        public void CreateContact(Contact newContact)
+        public void CreateContact(string username,Contact newContact)
         {
+            var user = userMn.GetUserByUsername(username);
+            newContact.User = user;
             var session = NhibernateContext.Session;
             using (var transaction = session.BeginTransaction())
             {
@@ -16,8 +18,10 @@ namespace ExileContactManagement.DBAccess
             }
         }
 
-        public void UpdateContact(Contact newContact)
+        public void UpdateContact(string username,Contact newContact)
         {
+            var user = userMn.GetUserByUsername(username);
+            newContact.User = user;
             var session = NhibernateContext.Session;
             using (var transaction = session.BeginTransaction())
             {
