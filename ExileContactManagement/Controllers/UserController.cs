@@ -32,14 +32,14 @@ namespace ExileContactManagement.Controllers
             if (ModelState.IsValid)
             {
                 User user = userMgr.GetUserByUsername(model.UserName);
-                if (user != null && user.Password == model.Password)
+              //  if (Membership.ValidateUser(model.UserName, model.Password))
+                if(userMgr.AuthenticateUser(model.UserName,model.Password))
                 {
-                    return RedirectToAction("Index", "User");
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    ContactController.NameOfCurrentUser = model.UserName;
+                        return RedirectToAction("Index", "Home");
+                    
                 }
-                    /*if (Membership.ValidateUser(model.UserName, model.Password))
-                {
-                    return RedirectToAction("Index", "User");
-                }*/
                 else
                 {
                     ModelState.AddModelError("", "The user name or password provided is incorrect.");
@@ -73,7 +73,7 @@ namespace ExileContactManagement.Controllers
             {
                 userMgr = new UserManagement();
                 userMgr.RegisterUser(new User(){UserName = userModel.UserName,Password = userModel.Password});
-                FormsAuthentication.SetAuthCookie(userModel.UserName, false /* createPersistentCookie */);
+                FormsAuthentication.SetAuthCookie(userModel.UserName, true /* createPersistentCookie */);
                 return RedirectToAction("Index", "User");
                 // Attempt to register the user
                 /*    MembershipCreateStatus createStatus;
@@ -118,7 +118,7 @@ namespace ExileContactManagement.Controllers
             try
             {
                 // TODO: Add insert logic here
-                UserManagement userMgr = new UserManagement();
+               // UserManagement userMgr = new UserManagement();
                 userMgr.RegisterUser(createdUser);
                 return RedirectToAction("Index");
             }

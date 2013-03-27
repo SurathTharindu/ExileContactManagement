@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ExileContactManagement.DBAccess;
+using ExileContactManagement.Models;
 
 namespace ExileContactManagement.Controllers
 {
     public class ContactController : Controller
     {
+
+        public static string NameOfCurrentUser { get; set; }
         //
         // GET: /Contact/
 
-
+        private ContactManagement contactManager= new ContactManagement();
 
         public ActionResult Index()
         {
-            return View();
+            var contactList = contactManager.ContactList(NameOfCurrentUser);
+            return View(contactList);
         }
 
         //
@@ -38,12 +43,12 @@ namespace ExileContactManagement.Controllers
         // POST: /Contact/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Contact contactModel)
         {
             try
             {
                 // TODO: Add insert logic here
-
+                contactManager.CreateContact(contactModel);
                 return RedirectToAction("Index");
             }
             catch
