@@ -19,6 +19,7 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
+            @Html.Display(Model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
 
@@ -27,6 +28,7 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Location)
+            @Html.Display(Model.Location)
             @Html.ValidationMessageFor(model => model.Location)
         </div>
 

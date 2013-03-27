@@ -11,7 +11,7 @@ namespace ExileContactManagement.Controllers
 {
     public class UserController : Controller
     {
-        private UserManagement userMgr= new UserManagement();
+        private UserManagement userMgr = new UserManagement();
         //
         // GET: /User/
 
@@ -32,13 +32,17 @@ namespace ExileContactManagement.Controllers
             if (ModelState.IsValid)
             {
                 User user = userMgr.GetUserByUsername(model.UserName);
-              //  if (Membership.ValidateUser(model.UserName, model.Password))
-                if(userMgr.AuthenticateUser(model.UserName,model.Password))
+                //  if (Membership.ValidateUser(model.UserName, model.Password))
+                if (userMgr.AuthenticateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    ContactController.NameOfCurrentUser = model.UserName;
-                        return RedirectToAction("Index", "Home");
-                    
+                    HttpCookie myCookie = new HttpCookie("loginCookie");
+                    myCookie.Value = model.UserName;
+                    Response.Cookies.Add(myCookie);
+                 //   ContactController temp= new ContactController();
+                 //   temp.NameOfCurrentUser = model.UserName;          
+                    return RedirectToAction("Index", "Contact");
+
                 }
                 else
                 {
@@ -72,7 +76,7 @@ namespace ExileContactManagement.Controllers
             if (ModelState.IsValid)
             {
                 userMgr = new UserManagement();
-                userMgr.RegisterUser(new User(){UserName = userModel.UserName,Password = userModel.Password});
+                userMgr.RegisterUser(new User() { UserName = userModel.UserName, Password = userModel.Password });
                 FormsAuthentication.SetAuthCookie(userModel.UserName, true /* createPersistentCookie */);
                 return RedirectToAction("Index", "User");
                 // Attempt to register the user
@@ -118,7 +122,7 @@ namespace ExileContactManagement.Controllers
             try
             {
                 // TODO: Add insert logic here
-               // UserManagement userMgr = new UserManagement();
+                // UserManagement userMgr = new UserManagement();
                 userMgr.RegisterUser(createdUser);
                 return RedirectToAction("Index");
             }
