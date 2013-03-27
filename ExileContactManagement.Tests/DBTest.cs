@@ -56,8 +56,8 @@ namespace ExileContactManagement.Tests
             var user = new User("nick", "nick123");
             UserMn.RegisterUser(user);
 
-            var contact = new Contact("john", "Colombo") {User = user};
-            CntactMn.CreateContact(contact);
+            var contact = new Contact("john", "Colombo");
+            CntactMn.CreateContact(user.UserName,contact);
 
             _session = NhibernateContext.Session;
             List<Contact> addedContact;
@@ -77,12 +77,12 @@ namespace ExileContactManagement.Tests
             var user = new User("paul", "paul123");
             UserMn.RegisterUser(user);
 
-            var contact = new Contact("jonny", "Kandy") {User = user};
-            CntactMn.CreateContact(contact);
+            var contact = new Contact("jonny", "Kandy");
+            CntactMn.CreateContact(user.UserName,contact);
 
             contact.Name = "Sandy";
             contact.Location = "Kurunegala";
-            CntactMn.UpdateContact(contact);
+            CntactMn.UpdateContact(user.UserName,contact);
 
             _session = NhibernateContext.Session;
             List<Contact> addedContact;
@@ -103,8 +103,8 @@ namespace ExileContactManagement.Tests
             var user = new User("mike", "mike123");
             UserMn.RegisterUser(user);
 
-            var contact = new Contact("hussey", "Australia") {User = user};
-            CntactMn.CreateContact(contact);
+            var contact = new Contact("hussey", "Australia");
+            CntactMn.CreateContact(user.UserName,contact);
 
             CntactMn.DeleteContact(contact.Id);
 
