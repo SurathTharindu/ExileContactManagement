@@ -32,15 +32,9 @@ namespace ExileContactManagement.Controllers
             if (ModelState.IsValid)
             {
                 User user = userMgr.GetUserByUsername(model.UserName);
-                //  if (Membership.ValidateUser(model.UserName, model.Password))
                 if (userMgr.AuthenticateUser(model.UserName, model.Password))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    HttpCookie myCookie = new HttpCookie("loginCookie");
-                    myCookie.Value = model.UserName;
-                    Response.Cookies.Add(myCookie);
-                 //   ContactController temp= new ContactController();
-                 //   temp.NameOfCurrentUser = model.UserName;          
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);      
                     return RedirectToAction("Index", "Contact");
 
                 }
@@ -49,8 +43,6 @@ namespace ExileContactManagement.Controllers
                     ModelState.AddModelError("", "The user name or password provided is incorrect.");
                 }
             }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -60,7 +52,6 @@ namespace ExileContactManagement.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-
             return RedirectToAction("Index", "User");
         }
 
@@ -75,24 +66,12 @@ namespace ExileContactManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                userMgr = new UserManagement();
                 userMgr.RegisterUser(new User() { UserName = userModel.UserName, Password = userModel.Password });
                 FormsAuthentication.SetAuthCookie(userModel.UserName, true /* createPersistentCookie */);
-                HttpCookie myCookie = new HttpCookie("loginCookie");
-                myCookie.Value = userModel.UserName;
-                Response.Cookies.Add(myCookie);
                 return RedirectToAction("Index", "User");
             }
             // If we got this far, something failed, redisplay form
             return View(userModel);
-        }
-
-        //
-        // GET: /User/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
         }
 
         //
@@ -111,59 +90,7 @@ namespace ExileContactManagement.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                // UserManagement userMgr = new UserManagement();
                 userMgr.RegisterUser(createdUser);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /User/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /User/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /User/Delete/5
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /User/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
                 return RedirectToAction("Index");
             }
             catch

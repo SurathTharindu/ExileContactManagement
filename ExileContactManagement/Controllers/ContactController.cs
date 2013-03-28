@@ -16,32 +16,26 @@ namespace ExileContactManagement.Controllers
         {
             get
             {
-                HttpCookie loginCookie = Request.Cookies["loginCookie"];
-                return Server.HtmlEncode(loginCookie.Value);
+                return System.Web.HttpContext.Current.User.Identity.Name;
             }
         }
+
         //
         // GET: /Contact/
+        private ContactManagement contactManager = new ContactManagement();
 
-        private ContactManagement contactManager= new ContactManagement();
-        
 
         public ActionResult Index()
         {
 
-            HttpCookie myCookie = new HttpCookie("MyTestCookie");
-            myCookie = Request.Cookies["MyTestCookie"];
-
-            // Read the cookie information and display it.
-            if (myCookie != null)
-                Response.Write("<p>" + myCookie.Name + "<p>" + myCookie.Value);
-            else
-                Response.Write("not found");
-
-            var contactList = contactManager.ContactList(NameOfCurrentUser);
-            if(contactList!=null && contactList.Count>0)
-                return View(contactList);
-            return View(new List<Contact>());
+            if (NameOfCurrentUser != null && NameOfCurrentUser != "")
+            {
+                var contactList = contactManager.ContactList(NameOfCurrentUser);
+                if (contactList != null && contactList.Count > 0)
+                    return View(contactList);
+                return View(new List<Contact>());
+            }
+            return RedirectToAction("Index","User");
         }
 
         //
@@ -49,8 +43,10 @@ namespace ExileContactManagement.Controllers
 
         public ActionResult Create()
         {
-            return View();
-        } 
+            if (NameOfCurrentUser != null && NameOfCurrentUser!="")
+                return View();
+            return RedirectToAction("Index","User");
+        }
 
         //
         // POST: /Contact/Create
@@ -60,7 +56,6 @@ namespace ExileContactManagement.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 contactManager.CreateContact(NameOfCurrentUser, contactModel);
                 return RedirectToAction("Index");
             }
@@ -69,10 +64,10 @@ namespace ExileContactManagement.Controllers
                 return View();
             }
         }
-        
+
         //
         // GET: /Contact/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             var selectedContact = contactManager.GetContactById(id);
@@ -81,13 +76,12 @@ namespace ExileContactManagement.Controllers
 
         //
         // POST: /Contact/Edit/5
-
         [HttpPost]
         public ActionResult Edit(int id, Contact updatingContact)
         {
             try
             {
-                contactManager.UpdateContact(NameOfCurrentUser,updatingContact);   
+                contactManager.UpdateContact(NameOfCurrentUser, updatingContact);
                 return RedirectToAction("Index");
             }
             catch
@@ -98,7 +92,7 @@ namespace ExileContactManagement.Controllers
 
         //
         // GET: /Contact/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
             var selectedContact = contactManager.GetContactById(id);
@@ -126,18 +120,21 @@ namespace ExileContactManagement.Controllers
         //GET: /Contact/Search
         public ActionResult Search()
         {
-            Search searchingModel = new Search();
-           // List<Contact> contacts=(List<Contact>)contactManager.ContactList(NameOfCurrentUser);
-            searchingModel.ResultList = new List<Contact>(contactManager.ContactList(NameOfCurrentUser));
-            return View(searchingModel);
+            if (NameOfCurrentUser != null && NameOfCurrentUser != "")
+            {
+                Search searchingModel = new Search();
+                searchingModel.ResultList = new List<Contact>(contactManager.ContactList(NameOfCurrentUser));
+                return View(searchingModel);
+            }
+            return RedirectToAction("Index","User");
         }
 
         //POST: /Contact/Search
         [HttpPost]
         public ActionResult Search(Search searchingModel)
         {
-            searchingModel.ResultList.Clear();//= new List<Contact>();
-            searchingModel.ResultList=contactManager.SearchedUserContacts(NameOfCurrentUser, searchingModel.SearchString);
+            searchingModel.ResultList.Clear();
+            searchingModel.ResultList = contactManager.SearchedUserContacts(NameOfCurrentUser, searchingModel.SearchString);
             return View(searchingModel);
         }
     }
