@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -9,6 +10,7 @@ namespace ExileContactManagement.Models
     public class Search
     {
         [Required]
+        [DisplayName("Search here")]
         public String SearchString { get; set; }
 
         public List<Contact> ResultList

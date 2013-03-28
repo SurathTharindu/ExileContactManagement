@@ -61,7 +61,16 @@ namespace ExileContactManagement.DBAccess
         public IList<Contact> ContactList(string username)
         {
             var user = userMn.GetUserByUsername(username);
-            return user.ContactList;
+            List<Contact> contactList;
+            var session = NhibernateContext.Session;
+            using (var transaction = NhibernateContext.Session.BeginTransaction())
+            {
+                contactList = (List<Contact>)session.QueryOver<Contact>()
+                                  .Where(x => x.User.UId== user.UId)
+                                  .List();
+                transaction.Commit();
+            }
+            return contactList;
         }
 
         public List<Contact> SearchedUserContacts(string username, string searchQuery)

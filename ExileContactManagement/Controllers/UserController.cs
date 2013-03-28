@@ -61,7 +61,7 @@ namespace ExileContactManagement.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "User");
         }
 
         // GET: /User/Register
@@ -78,20 +78,10 @@ namespace ExileContactManagement.Controllers
                 userMgr = new UserManagement();
                 userMgr.RegisterUser(new User() { UserName = userModel.UserName, Password = userModel.Password });
                 FormsAuthentication.SetAuthCookie(userModel.UserName, true /* createPersistentCookie */);
+                HttpCookie myCookie = new HttpCookie("loginCookie");
+                myCookie.Value = userModel.UserName;
+                Response.Cookies.Add(myCookie);
                 return RedirectToAction("Index", "User");
-                // Attempt to register the user
-                /*    MembershipCreateStatus createStatus;
-                    Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
-
-                    if (createStatus == MembershipCreateStatus.Success)
-                    {
-                        FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie #1#);
-                        return RedirectToAction("Index", "User");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", ErrorCodeToString(createStatus));
-                    }*/
             }
             // If we got this far, something failed, redisplay form
             return View(userModel);
@@ -134,7 +124,6 @@ namespace ExileContactManagement.Controllers
 
         //
         // GET: /User/Edit/5
-
         public ActionResult Edit(int id)
         {
             return View();
@@ -142,7 +131,6 @@ namespace ExileContactManagement.Controllers
 
         //
         // POST: /User/Edit/5
-
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {

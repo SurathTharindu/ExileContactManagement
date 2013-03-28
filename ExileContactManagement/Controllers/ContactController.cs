@@ -41,15 +41,7 @@ namespace ExileContactManagement.Controllers
             var contactList = contactManager.ContactList(NameOfCurrentUser);
             if(contactList!=null && contactList.Count>0)
                 return View(contactList);
-            return View();
-        }
-
-        //
-        // GET: /Contact/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
+            return View(new List<Contact>());
         }
 
         //
@@ -144,9 +136,9 @@ namespace ExileContactManagement.Controllers
         [HttpPost]
         public ActionResult Search(Search searchingModel)
         {
-            searchingModel.ResultList= new List<Contact>();
-
-            return View();
+            searchingModel.ResultList.Clear();//= new List<Contact>();
+            searchingModel.ResultList=contactManager.SearchedUserContacts(NameOfCurrentUser, searchingModel.SearchString);
+            return View(searchingModel);
         }
     }
 }
