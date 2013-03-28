@@ -30,13 +30,17 @@ namespace ExileContactManagement.DBAccess
 
         private static ISessionFactory CreateSessionFactory()
         {
+            string server = System.Configuration.ConfigurationManager.ConnectionStrings["server"].ToString();
+            string database = System.Configuration.ConfigurationManager.ConnectionStrings["database"].ToString();
+            string username = System.Configuration.ConfigurationManager.ConnectionStrings["username"].ToString();
+            string password = System.Configuration.ConfigurationManager.ConnectionStrings["password"].ToString(); 
             return Fluently.Configure()
               .Database(MsSqlConfiguration.MsSql2008
                             .ConnectionString(c => c
-                            .Server("localhost")
-                            .Database("ExileContactMgt")
-                            .Username("sa")
-                            .Password("eXile123")))
+                            .Server(server)
+                            .Database(database)
+                            .Username(username)
+                            .Password(password)))
               .Mappings(m => m.FluentMappings.AddFromAssemblyOf<NhibernateContext>())
               .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
               .BuildSessionFactory();
