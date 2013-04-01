@@ -4,12 +4,13 @@
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/menuSelector.js")" type="text/javascript"></script>
 </head>
 <body>
     <div class="page">
         <div id="header">
-            <div id="title">
-                <h1>ExileContactManagement</h1>
+            <div id="title">                
+                <h1><img src="/Content/Img/logo.png" alt="ExileContactMgt"></h1>
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
