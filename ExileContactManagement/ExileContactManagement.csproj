@@ -182,6 +182,7 @@
     <Content Include="Content\StMarieThin.otf" />
     <Content Include="Content\GraublauWeb.ttf" />
     <Content Include="Content\Titillium.ttf" />
+    <None Include="Properties\PublishProfiles\exilecontactmgt.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\menuSelector.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
