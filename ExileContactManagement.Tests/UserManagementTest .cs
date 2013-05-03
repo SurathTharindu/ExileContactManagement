@@ -10,18 +10,16 @@ namespace ExileContactManagement.Tests
     [TestFixture]
     public class UserManagementTest 
     {
-        UserManagement UserMn = new UserManagement();
-        ContactManagement CntactMn = new ContactManagement();
-        private ISession _session;
+        readonly UserManagement _userMn = new UserManagement();
+        private readonly ISession _session= NhibernateContext.Session;
 
         [Test]
         public void RetrievedUserMatchesSavedUser()
         {
             var user = new User("tomm", "tom123");
-            UserMn.RegisterUser(user);
+            _userMn.RegisterUser(user);
 
-            _session = NhibernateContext.Session;
-            ((List<User>)_session.QueryOver<User>().List()).Should().Contain(user);
+            _session.QueryOver<User>().List().Should().Contain(user);
         }
 
         [Test]
@@ -29,39 +27,37 @@ namespace ExileContactManagement.Tests
         public void RegistratingUserPerformWell()
         {
             var user = new User("jim", "jim123");
-            UserMn.RegisterUser(user);
+            _userMn.RegisterUser(user);
         }
 
         [Test]
         public void RetrievedExistingUserByUsername()
         {
             var user = new User("jerry", "jerry123");
-            UserMn.RegisterUser(user);
+            _userMn.RegisterUser(user);
 
-            var checkedUser = UserMn.GetUserByUsername("jerry");
+            var checkedUser = _userMn.GetUserByUsername("jerry");
             checkedUser.Should().NotBeNull();
         }
 
         [Test]
         public void RetrievedRelevantUserByUsername()
         {
-            _session = NhibernateContext.Session;
             _session.CreateQuery("DELETE FROM User WHERE UserName = 'jerry'").ExecuteUpdate();
 
             var user = new User("jerry", "jerry123");
-            UserMn.RegisterUser(user);
+            _userMn.RegisterUser(user);
 
-            var checkedUser = UserMn.GetUserByUsername("jerry");
+            var checkedUser = _userMn.GetUserByUsername("jerry");
             checkedUser.Should().Be(user);
         }
 
         [Test]
         public void NotRetrievedNonExistingUserByUsername()
         {
-            _session = NhibernateContext.Session;
             _session.CreateQuery("DELETE FROM User WHERE UserName = 'snow'").ExecuteUpdate();
 
-            var checkedUser = UserMn.GetUserByUsername("snow");
+            var checkedUser = _userMn.GetUserByUsername("snow");
             checkedUser.Should().BeNull();
         }
 
@@ -71,29 +67,28 @@ namespace ExileContactManagement.Tests
         public void AuthenticateRegiteredUser()
         {
             var user = new User("mike", "mike123");
-            UserMn.RegisterUser(user);
+            _userMn.RegisterUser(user);
 
-            UserMn.AuthenticateUser("mike", "mike123").Should().BeTrue();
+            _userMn.AuthenticateUser("mike", "mike123").Should().BeTrue();
         }
 
         [Test]
         public void NotAuthenticateUnregiteredUser()
         {
-            _session = NhibernateContext.Session;
             _session.CreateQuery("DELETE FROM User WHERE UserName = 'neil'").ExecuteUpdate();
-            UserMn.AuthenticateUser("neil", "neil123").Should().BeFalse();
+            _userMn.AuthenticateUser("neil", "neil123").Should().BeFalse();
         }
 
         [Test]
         public void CorrectlyResetUserPassword()
         {
             var user = new User("hobit", "hobit123");
-            UserMn.RegisterUser(user);
+            _userMn.RegisterUser(user);
 
             const string newPassword = "123456";
-            UserMn.ResetPassword(user.UserName, newPassword);
+            _userMn.ResetPassword(user.UserName, newPassword);
 
-            var newUser = UserMn.GetUserByUsername(user.UserName);
+            var newUser = _userMn.GetUserByUsername(user.UserName);
             newUser.Password.Should().NotBe("hobit123").And.Be(newPassword);
         }
     }
